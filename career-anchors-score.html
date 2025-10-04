@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Career Anchors Inventory</title>
-  <!-- Alice everywhere for titles & UI -->
-  <link href="https://fonts.googleapis.com/css2?family=Alice:wght@400;600&display=swap" rel="stylesheet">
+  <!-- 1) Load BOTH fonts -->
+<  link href="https://fonts.googleapis.com/css2?family=Alice:wght@400;600&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
       --ink:#2E2E2E;           /* body text */
@@ -21,7 +21,7 @@
     html,body{height:100%}
     body{
       margin:0;
-      font-family:'Alice', serif; /* Alice globally */
+      font-family:'Lora', serif;
       background-color:var(--teal);
       color:var(--ink);
       display:flex;
@@ -32,7 +32,9 @@
     .shell{width:min(960px, 100%); padding:32px 16px}
 
     /* Titles & subtitles in Alice */
-    h1, h2, h3, .sub, .progress-text, button, .pill { font-family:'Alice', serif; }
+    /* h1, h2, h3, .sub, .progress-text, button, .pill { font-family:'Alice', serif; }
+    /* Only titles/subtitles use Alice */
+h   h1, h2, h3, .qindex, .sub { font-family:'Alice', serif; }
 
     h1{text-align:center; color:#fff; margin:8px 0 4px}
     .sub{color:var(--teal-200); text-align:center; margin:0 0 16px; font-size:18px}
@@ -54,7 +56,7 @@
 
     /* Question area */
     .qwrap{display:flex; flex-direction:column; gap:14px; padding:24px 22px}
-    .qindex{color:var(--teal); font-weight:600; font-size: 26px; letter-spacing:.02em}
+    .qindex{color:var(--teal); font-weight:600; font-size: 24px; letter-spacing:.02em}
     .qtext{font-size:20px; line-height:1.5}
 
     fieldset{border:0; margin:0; padding:0}
