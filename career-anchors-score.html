@@ -1,113 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Career Anchors Inventory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Alice&display=swap" rel="stylesheet">
+  <!-- Alice everywhere for titles & UI -->
+  <link href="https://fonts.googleapis.com/css2?family=Alice:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Alice', serif;
-      background-color: #2A6874;
-      color: #2E2E2E;
-      padding: 40px 20px;
-      max-width: 800px;
-      margin: auto;
-      line-height: 1.6;
+    :root{
+      --ink:#2E2E2E;           /* body text */
+      --teal:#2A6874;          /* brand teal */
+      --teal-200:#87b9bb;      /* light teal */
+      --blush:#E6B3A8;         /* accent */
+      --blush-700:#d29d93;     /* hover */
+      --paper:#ffffff;         /* cards */
+      --paper-warm:#fff9f4;    /* results bg */
     }
 
-    h1 {
-      font-family: 'Lora', serif;
-      text-align: center;
-      color: #ffffff;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Alice', serif; /* Alice globally */
+      background-color:var(--teal);
+      color:var(--ink);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
     }
 
-    h2 {
-      text-align: center;
-      color: #87b9bb;
+    .shell{width:min(960px, 100%); padding:32px 16px}
+
+    /* Titles & subtitles in Alice */
+    h1, h2, h3, .sub, .progress-text, button, .pill { font-family:'Alice', serif; }
+
+    h1{text-align:center; color:#fff; margin:8px 0 4px}
+    .sub{color:var(--teal-200); text-align:center; margin:0 0 16px; font-size:18px}
+
+    .card{
+      background:var(--paper);
+      border-radius:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,.08);
+      overflow:hidden;
     }
 
-    form {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+    .about{padding:18px 22px; margin:0 0 16px}
+
+    /* Progress */
+    .progress{display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--paper); border-radius:12px; margin:8px 0 16px}
+    .progress-bar{flex:1; height:10px; background:#e7eef0; border-radius:999px; overflow:hidden}
+    .progress-bar > div{height:100%; width:0%; background:var(--blush); transition:width .35s ease}
+    .progress-text{font-size:14px; color:var(--teal)}
+
+    /* Question area */
+    .qwrap{display:flex; flex-direction:column; gap:14px; padding:24px 22px}
+    .qindex{color:var(--teal); font-weight:600; letter-spacing:.02em}
+    .qtext{font-size:20px; line-height:1.5}
+
+    fieldset{border:0; margin:0; padding:0}
+    .options{display:grid; gap:8px}
+    .option{
+      display:flex; align-items:flex-start; gap:10px; padding:12px 12px; border:1px solid #e5e5e5; border-radius:10px; cursor:pointer;
     }
-    .question {
-      margin-bottom: 24px;
+    .option:hover{border-color:#d7d7d7}
+    .option input[type="radio"]{accent-color:var(--blush); margin-top:3px}
+    .help{font-size:13px; color:#666}
+
+    /* Sticky controls */
+    .controls{
+      position:sticky; bottom:0; z-index:5; background:var(--paper);
+      display:flex; gap:10px; justify-content:space-between; align-items:center;
+      padding:14px 16px; border-top:1px solid #eee
     }
-    .question > label {
-      font-weight: bold;
-      color: #2A6874;
+    button{
+      background:var(--blush); color:var(--ink); border:none; padding:12px 18px; border-radius:10px; cursor:pointer; font-size:16px;
+      transition:background-color .2s ease, transform .02s ease; box-shadow:0 4px 10px rgba(0,0,0,.06)
     }
-    label {
-      display: block;
-      margin-bottom: 8px;
-    }
-    input[type="radio"] {
-      accent-color: #E6B3A8;
-      margin: 0 6px 0 0;
-    }
-    button {
-      background-color: #E6B3A8;
-      color: #2E2E2E;
-      border: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      font-family: 'Alice', serif;
-      border-radius: 8px;
-      cursor: pointer;
-      display: block;
-      margin: 30px auto 0;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #d29d93;
-    }
-    .results {
-      margin-top: 40px;
-      background: #fff9f4;
-      border-left: 5px solid #E6B3A8;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    .results h2 {
-      color: #2E2E2E;
-    }
-    .anchor-description {
-      margin-top: 20px;
-      background-color: #E6B3A8;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    .about {
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 30px;
+    button:hover{background:var(--blush-700)}
+    button:active{transform:translateY(1px)}
+    button.ghost{background:#f3f6f7}
+    button[disabled]{opacity:.5; cursor:not-allowed}
+
+    .top-actions{display:flex; gap:8px; justify-content:flex-end; margin-bottom:8px}
+    .pill{background:#184a54; color:#e7ffff; border:0; padding:8px 12px; border-radius:999px; font-size:13px}
+
+    .results{margin-top:18px; background:var(--paper-warm); border-left:5px solid var(--blush); padding:20px; border-radius:10px}
+    .anchor{background:var(--blush); border-radius:10px; padding:10px 12px; margin:12px 0}
+    .muted{font-size:12px; color:#3a3a3a}
+
+    .hidden{display:none !important}
+
+    @media (min-width:720px){
+      .options{grid-template-columns:1fr 1fr}
     }
   </style>
 </head>
 <body>
-  <h1>Discover Your Career Anchors</h1>
+  <div class="shell">
+    <h1>Discover Your Career Anchors</h1>
+    <p class="sub">Use the scale to rate how true each of the items is for you.</p>
 
-  <h2>About This Questionnaire</h2>
-  <div class="about">
-    <p>The concept of career anchors was introduced by Edgar Schein, a renowned organizational psychologist. This questionnaire is designed to help you identify your top career anchors, revealing what drives you in your career choices and decision-making.</p>
-    <p>Are you ready to find out what motivates you in your career? This simple questionnaire will take approximately 10-15 minutes to complete, as it consists of 40 questions.</p>
+    <div class="top-actions">
+      <button class="pill" id="resumeBtn" title="Load saved progress">Resume</button>
+      <button class="pill" id="resetBtn" title="Clear all answers">Reset</button>
+    </div>
+
+    <div class="progress" aria-live="polite">
+      <div class="progress-bar" aria-hidden="true"><div id="barFill"></div></div>
+      <div class="progress-text"><span id="now">1</span>/<span id="total">40</span></div>
+    </div>
+
+    <section class="card" id="qaCard" aria-live="polite">
+      <div class="qwrap">
+        <div class="qindex" id="qIndex">Question 1</div>
+        <div class="qtext" id="qText">Loading…</div>
+        <form id="qForm">
+          <fieldset>
+            <legend class="help" id="legendHelp"></legend>
+            <div class="options" id="options"></div>
+          </fieldset>
+        </form>
+      </div>
+      <div class="controls">
+        <button type="button" class="ghost" id="backBtn">← Back</button>
+        <div style="display:flex; gap:10px">
+          <button type="button" class="ghost" id="reviewBtn">Review</button>
+          <button type="button" id="nextBtn">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviewSection" class="card hidden">
+      <div class="qwrap">
+        <h2 class="sub" style="color:var(--teal); margin-top:0">Quick Review</h2>
+        <div id="reviewList" class="options"></div>
+      </div>
+      <div class="controls">
+        <button type="button" class="ghost" id="reviewBackBtn">← Back to question</button>
+        <button type="button" id="finishBtn">Calculate score</button>
+      </div>
+    </section>
+
+    <section id="resultsSection" class="results hidden" tabindex="-1">
+      <h2>Your Top Career Anchors</h2>
+      <div id="results"></div>
+      <p class="muted"><strong>Note:</strong> Your answers are saved only in your browser (local storage). Use <em>Reset</em> above to clear them.</p>
+    </section>
+
+    <section class="card about">
+      <h2 style="color:var(--teal); margin:0 0 6px">About This Questionnaire</h2>
+      <p>The concept of career anchors was introduced by Edgar Schein. A career anchor is something that develops over time and evolves into a self-concept, shaping an individual’s personal identity or self-image and includes:</p>
+      <p>
+        <ul>
+          <li>Talents, skills, and abilities – the things that we believe we are good at and not so good at.</li>
+          <li>Motives and needs – what is important to us and takes the form of goals, e.g. money,status,challenge, autonomy.</li>
+          <li>Attitudes and values – the kind of organization that we feel comfortable with, one that matches our own values and beliefs.</li>
+        </ul>
+        </p>
+    </section>
   </div>
 
-  <h2>Career Orientations Inventory</h2>
-
-  <form id="anchorForm">
-    <div id="questionContainer"></div>
-    <button type="submit">Calculate Score</button>
-  </form>
-
-  <div class="results" id="results"></div>
-
   <script>
+    /* ==== Labels & items (from your original) ==== */
     const anchorLabels = {
       TF: "Technical/Functional Competence",
       GM: "General Managerial Competence",
@@ -131,108 +185,255 @@
     };
 
     const responseMap = {
-      1: "1 - Never true for me",
-      2: "2 - Rarely",
-      3: "3 - Sometimes",
-      4: "4 - Often",
-      5: "5 - Usually",
-      6: "6 - Always true for me"
+      1: "(1) Never true for me",
+      2: "(2) Rarely",
+      3: "(3) Occasionally",
+      4: "(4) Often",
+      5: "(5) Usually",
+      6: "(6) Always true for me"
     };
 
     const statements = [
-  ["I dream of being so good at what I do that my expert advice will be sought continually.", "TF"],
-  ["I am most fulfilled in my work when I have been able to integrate and manage the efforts of others.", "GM"],
-  ["I dream of having a career that will allow me the freedom to do a job my own way and on my own schedule.", "AU"],
-  ["Security and stability are more important to me than freedom and autonomy.", "SE"],
-  ["I am always on the lookout for ideas that would permit me to start my own enterprise.", "EC"],
-  ["I will feel successful in my career only if I have a feeling of having made a real contribution to the welfare of society.", "SV"],
-  ["I dream of a career in which I can solve problems or win out in situations that are extremely challenging.", "CH"],
-  ["I would rather leave my organization than be put into a job that would compromise my ability to pursue personal and family concerns.", "LS"],
-  ["I will feel successful in my career only if I can develop my technical or functional skills to a very high level of competence.", "TF"],
-  ["I dream of being in charge of a complex organization and making decisions that affect many people.", "GM"],
-  ["I am most fulfilled in my work when I am completely free to define my own tasks, schedules, and procedures.", "AU"],
-  ["I would rather leave my organization altogether than accept an assignment that would jeopardize my security in that organization.", "SE"],
-  ["Building my own business is more important to me than achieving a high-level managerial position in someone else’s organization.", "EC"],
-  ["I am most fulfilled in my career when I have been able to use my talents in the service of others.", "SV"],
-  ["I will feel successful in my career when I have been able to use my talents in the service of others.", "CH"],
-  ["I dream of a career that will permit me to integrate my personal, family, and work needs.", "LS"],
-  ["Becoming a functional manager in my area of expertise is more attractive to me than becoming a general manager.", "TF"],
-  ["I will feel successful in my career only if I become a general manager in some organization.", "GM"],
-  ["I will feel successful in my career only if I achieve complete autonomy and freedom.", "AU"],
-  ["I seek jobs in organizations that will give me a sense of security and stability.", "SE"],
-  ["I am most fulfilled in my career when I have been able to build something that is entirely the result of my own ideas and efforts.", "EC"],
-  ["Using my skills to make the world a better place to live and work is more important to me than achieving a high-level managerial position.", "SV"],
-  ["I have been most fulfilled in my career when I have solved seemingly unsolvable problems or won out over seemingly impossible odds.", "CH"],
-  ["I feel successful in life only if I have been able to balance my personal, family, and career requirements.", "LS"],
-  ["I would rather leave my organization than accept a rotational assignment that would take me out of my area of expertise.", "TF"],
-  ["Becoming a general manager is more attractive to me than becoming a functional manager in my current area of expertise.", "GM"],
-  ["The chance to do a job my own way, free of rules and constraints, is more important to me than security.", "AU"],
-  ["I am most fulfilled in my work when I feel that I have complete financial and employment security.", "SE"],
-  ["I will feel successful in my career only if I have succeeded in creating or building something that is entirely my own product or idea.", "EC"],
-  ["I dream of having a career that makes a real contribution to humanity and society.", "SV"],
-  ["I seek out work opportunities that strongly challenge my problem solving and/or competitive skills.", "CH"],
-  ["Balancing the demands of personal and professional life is more important to me than achieving a high-level managerial position.", "LS"],
-  ["I am most fulfilled in my work when I have been able to use my special skills and talents.", "TF"],
-  ["I would rather leave my organization than accept a job that would take me away from the general managerial track.", "GM"],
-  ["I would rather leave my organization than accept a job that would reduce my autonomy and freedom.", "AU"],
-  ["I dream of having a career that will allow me to feel a sense of security and stability.", "SE"],
-  ["I dream of starting up and running my own business.", "EC"],
-  ["I would rather leave my organization than accept an assignment that would undermine my ability to be of service to others.", "SV"],
-  ["Working on problems that are almost unsolvable is more important to me than achieving a high-level managerial position.", "CH"],
-  ["I have always sought out work opportunities that would minimize interference with home or family concerns.", "LS"]
-];
+      ["I dream of being so good at what I do that my expert advice will be sought continually.", "TF"],
+      ["I am most fulfilled in my work when I have been able to integrate and manage the efforts of others.", "GM"],
+      ["I dream of having a career that will allow me the freedom to do a job my own way and on my own schedule.", "AU"],
+      ["Security and stability are more important to me than freedom and autonomy.", "SE"],
+      ["I am always on the lookout for ideas that would permit me to start my own enterprise.", "EC"],
+      ["I will feel successful in my career only if I have a feeling of having made a real contribution to the welfare of society.", "SV"],
+      ["I dream of a career in which I can solve problems or win out in situations that are extremely challenging.", "CH"],
+      ["I would rather leave my organization than be put into a job that would compromise my ability to pursue personal and family concerns.", "LS"],
+      ["I will feel successful in my career only if I can develop my technical or functional skills to a very high level of competence.", "TF"],
+      ["I dream of being in charge of a complex organization and making decisions that affect many people.", "GM"],
+      ["I am most fulfilled in my work when I am completely free to define my own tasks, schedules, and procedures.", "AU"],
+      ["I would rather leave my organization altogether than accept an assignment that would jeopardize my security in that organization.", "SE"],
+      ["Building my own business is more important to me than achieving a high-level managerial position in someone else’s organization.", "EC"],
+      ["I am most fulfilled in my career when I have been able to use my talents in the service of others.", "SV"],
+      ["I will feel successful in my career when I have been able to use my talents in the service of others.", "CH"],
+      ["I dream of a career that will permit me to integrate my personal, family, and work needs.", "LS"],
+      ["Becoming a functional manager in my area of expertise is more attractive to me than becoming a general manager.", "TF"],
+      ["I will feel successful in my career only if I become a general manager in some organization.", "GM"],
+      ["I will feel successful in my career only if I achieve complete autonomy and freedom.", "AU"],
+      ["I seek jobs in organizations that will give me a sense of security and stability.", "SE"],
+      ["I am most fulfilled in my career when I have been able to build something that is entirely the result of my own ideas and efforts.", "EC"],
+      ["Using my skills to make the world a better place to live and work is more important to me than achieving a high-level managerial position.", "SV"],
+      ["I have been most fulfilled in my career when I have solved seemingly unsolvable problems or won out over seemingly impossible odds.", "CH"],
+      ["I feel successful in life only if I have been able to balance my personal, family, and career requirements.", "LS"],
+      ["I would rather leave my organization than accept a rotational assignment that would take me out of my area of expertise.", "TF"],
+      ["Becoming a general manager is more attractive to me than becoming a functional manager in my current area of expertise.", "GM"],
+      ["The chance to do a job my own way, free of rules and constraints, is more important to me than security.", "AU"],
+      ["I am most fulfilled in my work when I feel that I have complete financial and employment security.", "SE"],
+      ["I will feel successful in my career only if I have succeeded in creating or building something that is entirely my own product or idea.", "EC"],
+      ["I dream of having a career that makes a real contribution to humanity and society.", "SV"],
+      ["I seek out work opportunities that strongly challenge my problem solving and/or competitive skills.", "CH"],
+      ["Balancing the demands of personal and professional life is more important to me than achieving a high-level managerial position.", "LS"],
+      ["I am most fulfilled in my work when I have been able to use my special skills and talents.", "TF"],
+      ["I would rather leave my organization than accept a job that would take me away from the general managerial track.", "GM"],
+      ["I would rather leave my organization than accept a job that would reduce my autonomy and freedom.", "AU"],
+      ["I dream of having a career that will allow me to feel a sense of security and stability.", "SE"],
+      ["I dream of starting up and running my own business.", "EC"],
+      ["I would rather leave my organization than accept an assignment that would undermine my ability to be of service to others.", "SV"],
+      ["Working on problems that are almost unsolvable is more important to me than achieving a high-level managerial position.", "CH"],
+      ["I have always sought out work opportunities that would minimize interference with home or family concerns.", "LS"]
+    ];
 
+    const total = statements.length;
 
-    // Generate questions dynamically
-    const questionContainer = document.getElementById("questionContainer");
-    statements.forEach((s, i) => {
-      const div = document.createElement("div");
-      div.className = "question";
-      div.innerHTML = `<label>${i + 1}. ${s[0]}</label><div>` +
-        Array.from({length: 6}, (_, j) => `<label style='display:block; margin-bottom:5px;'><input type="radio" name="q${i}" value="${j+1}" required> ${responseMap[j+1]}</label>`).join(" ") +
-        "</div>";
-      questionContainer.appendChild(div);
+    /* ==== State & storage ==== */
+    const storeKey = 'anchorsAnswers.v1';
+    const answers = JSON.parse(localStorage.getItem(storeKey) || '[]');
+    if(answers.length !== total){
+      for(let i=0;i<total;i++){ if(typeof answers[i] === 'undefined') answers[i] = null; }
+    }
+    let idx = Math.max(0, answers.findIndex(v => v === null));
+    if(idx === -1) idx = 0; // fallback
+
+    /* ==== DOM refs ==== */
+    const barFill = document.getElementById('barFill');
+    const nowEl = document.getElementById('now');
+    const totalEl = document.getElementById('total');
+    totalEl.textContent = total;
+    const qIndex = document.getElementById('qIndex');
+    const qText = document.getElementById('qText');
+    const optionsEl = document.getElementById('options');
+
+    const qaCard = document.getElementById('qaCard');
+    const reviewSection = document.getElementById('reviewSection');
+    const resultsSection = document.getElementById('resultsSection');
+    const reviewList = document.getElementById('reviewList');
+
+    const backBtn = document.getElementById('backBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const reviewBtn = document.getElementById('reviewBtn');
+    const reviewBackBtn = document.getElementById('reviewBackBtn');
+    const finishBtn = document.getElementById('finishBtn');
+
+    const resumeBtn = document.getElementById('resumeBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function save(){ localStorage.setItem(storeKey, JSON.stringify(answers)); }
+
+    function setView(section){
+      // section: 'qa' | 'review' | 'results'
+      qaCard.classList.toggle('hidden', section !== 'qa');
+      reviewSection.classList.toggle('hidden', section !== 'review');
+      resultsSection.classList.toggle('hidden', section !== 'results');
+      if(section==='qa') qaCard.focus({preventScroll:true});
+      if(section==='results') resultsSection.focus({preventScroll:true});
+    }
+
+    function renderQuestion(){
+      const n = idx + 1;
+      qIndex.textContent = `Question ${n}`;
+      qText.textContent = statements[idx][0];
+      nowEl.textContent = n;
+      const pct = Math.round((answers.filter(v=>v!=null).length / total) * 100);
+      barFill.style.width = `${pct}%`;
+
+      // build options
+      optionsEl.innerHTML = '';
+      for(let v=1; v<=6; v++){
+        const id = `q${idx}_v${v}`;
+        const wrapper = document.createElement('label');
+        wrapper.className = 'option';
+        wrapper.setAttribute('for', id);
+        wrapper.innerHTML = `
+          <input type="radio" name="q${idx}" id="${id}" value="${v}" ${answers[idx]===v? 'checked':''}>
+          <div>${responseMap[v]}</div>
+        `;
+        optionsEl.appendChild(wrapper);
+      }
+
+      // button states
+      backBtn.disabled = idx === 0;
+      nextBtn.textContent = (idx === total-1) ? 'Finish →' : 'Next →';
+      nextBtn.disabled = answers[idx] == null;
+
+      // focus the current choice or first option
+      setTimeout(()=>{
+        const chosen = document.querySelector(`input[name="q${idx}"]:checked`);
+        (chosen || optionsEl.querySelector('input'))?.focus();
+      }, 0);
+    }
+
+    // event: change selection
+    optionsEl.addEventListener('change', (e)=>{
+      const input = e.target.closest('input[type="radio"]');
+      if(!input) return;
+      answers[idx] = Number(input.value);
+      save();
+      nextBtn.disabled = false;
     });
 
-    // Handle form submission and calculate results
-    document.getElementById("anchorForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+    // keyboard shortcuts 1-6, left/right
+    window.addEventListener('keydown', (e)=>{
+      if(e.key >= '1' && e.key <= '6'){
+        const v = Number(e.key);
+        const target = document.querySelector(`input[name="q${idx}"][value="${v}"]`);
+        if(target){ target.checked = true; target.dispatchEvent(new Event('change', {bubbles:true})); }
+      }
+      if(e.key === 'ArrowRight'){ if(!nextBtn.disabled) goNext(); }
+      if(e.key === 'ArrowLeft'){ if(!backBtn.disabled) goBack(); }
+    });
 
-      const scores = { TF: 0, GM: 0, AU: 0, SE: 0, EC: 0, SV: 0, CH: 0, LS: 0 };
+    function goNext(){
+      if(idx < total-1){ idx++; renderQuestion(); }
+      else { openReview(); }
+    }
+    function goBack(){ if(idx>0){ idx--; renderQuestion(); } }
 
-      // Track answers for each anchor and add a +5 boost
-      statements.forEach((s, i) => {
-        const val = parseInt(document.querySelector(`input[name='q${i}']:checked`).value);
-        const anchor = s[1]; // Get the anchor for this question
-        scores[anchor] += val;
+    nextBtn.addEventListener('click', goNext);
+    backBtn.addEventListener('click', goBack);
+
+    // Review page
+    function openReview(){
+      buildReview();
+      setView('review');
+    }
+
+    function buildReview(){
+      reviewList.innerHTML = '';
+      statements.forEach((s, i)=>{
+        const row = document.createElement('div');
+        row.className = 'option';
+        row.style.alignItems = 'center';
+        row.innerHTML = `
+          <div style="flex:1">
+            <div style="font-weight:600; color:var(--teal)">Q${i+1}</div>
+            <div>${s[0]}</div>
+            <div class="help">${answers[i] ? responseMap[answers[i]] : 'No answer yet'}</div>
+          </div>
+          <button class="ghost" data-jump="${i}">Edit</button>
+        `;
+        reviewList.appendChild(row);
       });
+    }
 
-      // Apply the +5 boost to each anchor's total score (based on the table)
-      const boostedScores = Object.keys(scores).reduce((boosted, key) => {
-        boosted[key] = scores[key] + 5; // Add the +5 boost
-        return boosted;
-      }, {});
-
-      // Calculate the average score for each anchor
-      const averages = Object.keys(boostedScores).reduce((avgScores, key) => {
-        avgScores[key] = (boostedScores[key] / 5).toFixed(2); // Divide by 5 as there are 5 questions per anchor
-        return avgScores;
-      }, {});
-
-      // Sort anchors by average score (highest first)
-      const sorted = Object.entries(averages).sort((a, b) => b[1] - a[1]);
-
-      // Update the results section with the top 3 anchors and their descriptions
-      const resultArea = document.getElementById("results");
-      resultArea.innerHTML = "<h2>Your Top Career Anchors</h2><ul>" +
-        sorted.slice(0, 3).map(([k, v]) => {
-          return `<li><strong>${anchorLabels[k]} (Average Score: ${v})</strong><br>${anchorDescriptions[k]}</li>`;
-        }).join("") +
-        "</ul>" +
-        "<p style='font-size: 12px; font-style: normal; color: #2E2E2E;'><strong>Please note:</strong> Refreshing the page will result in cleaning out the results. No data is stored.</p>";
+    reviewList.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-jump]');
+      if(!btn) return;
+      idx = Number(btn.dataset.jump);
+      setView('qa');
+      renderQuestion();
     });
+
+    reviewBtn.addEventListener('click', openReview);
+    reviewBackBtn.addEventListener('click', ()=> setView('qa'));
+
+    finishBtn.addEventListener('click', ()=>{
+      // ensure all answered
+      const missing = answers.findIndex(v=>v==null);
+      if(missing !== -1){
+        alert(`You still have unanswered items (first missing: Q${missing+1}).`);
+        idx = missing; setView('qa'); renderQuestion(); return;
+      }
+      calculateAndRenderResults();
+      setView('results');
+    });
+
+    // Resume & reset
+    resumeBtn.addEventListener('click', ()=>{
+      const firstEmpty = answers.findIndex(v=>v==null);
+      idx = (firstEmpty === -1) ? total-1 : firstEmpty;
+      setView('qa');
+      renderQuestion();
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      if(!confirm('Clear all saved answers and results?')) return;
+      for(let i=0;i<answers.length;i++) answers[i] = null;
+      save();
+      idx = 0; setView('qa'); renderQuestion();
+      document.getElementById('results').innerHTML = '';
+      resultsSection.classList.add('hidden');
+    });
+
+    // Results logic (your +5 boost + average per anchor)
+    function calculateAndRenderResults(){
+      const scores = { TF:0, GM:0, AU:0, SE:0, EC:0, SV:0, CH:0, LS:0 };
+      statements.forEach((s,i)=>{ const v = Number(answers[i]); const anchor = s[1]; scores[anchor]+=v; });
+      const boosted = Object.fromEntries(Object.entries(scores).map(([k,v])=>[k, v+5]));
+      const averages = Object.fromEntries(Object.entries(boosted).map(([k,v])=>[k, (v/5).toFixed(2)]));
+      const sorted = Object.entries(averages).sort((a,b)=> b[1]-a[1]);
+
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = sorted.slice(0,3).map(([k,v])=>{
+        return `
+          <div class="anchor">
+            <strong>${anchorLabels[k]} (Average: ${v})</strong><br>
+            <span>${anchorDescriptions[k]}</span>
+          </div>
+        `;
+      }).join('') + `
+        <details style="margin-top:8px">
+          <summary>See all anchors</summary>
+          <ul style="margin:8px 0 0 18px">${sorted.map(([k,v])=>`<li><strong>${anchorLabels[k]}</strong>: ${v}</li>`).join('')}</ul>
+        </details>
+      `;
+      setTimeout(()=> resultsSection.scrollIntoView({behavior:'smooth'}), 50);
+    }
+
+    // init
+    renderQuestion();
   </script>
 </body>
 </html>
-
-
